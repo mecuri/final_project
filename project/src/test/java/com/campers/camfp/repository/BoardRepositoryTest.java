@@ -4,7 +4,6 @@ import java.util.stream.IntStream;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -13,7 +12,6 @@ import org.springframework.data.domain.Sort;
 
 import com.campers.camfp.entity.board.Board;
 import com.campers.camfp.entity.member.Member;
-import com.campers.camfp.repository.board.BoardQuerydsl;
 import com.campers.camfp.repository.board.BoardRepository;
 
 @SpringBootTest
@@ -31,12 +29,13 @@ public class BoardRepositoryTest {
 	@Test
 	public void testInsert() {
 		
-		IntStream.rangeClosed(1, 50).forEach(i -> {
+		IntStream.rangeClosed(1, 300).forEach(i -> {
 			
 			int count = (int)((Math.random() * 5000) + 1);
 			int heart = (int)((Math.random() * 1000) + 1);
+			int mem = (int)((Math.random() * 50) + 1);
 			
-			Member member = Member.builder().mno((long) i).build();
+			Member member = Member.builder().mno((long) mem).build();
 			
 			Board board = Board.builder().title("Sample Title" + i)
 										 

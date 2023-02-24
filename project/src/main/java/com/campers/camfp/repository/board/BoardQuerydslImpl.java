@@ -58,28 +58,26 @@ public class BoardQuerydslImpl extends QuerydslRepositorySupport implements Boar
       
       booleanBuilder.and(expression);
       
-      if (type == null || "".equals("")) {
-         type = "twc";
-      }
-      
-      String[] typeArr = type.split("");
-      BooleanBuilder conditionBuilder = new BooleanBuilder();
-      for(String t : typeArr) {
-         switch(t) {
-         case "t" :
-            conditionBuilder.or(board.title.contains(keyword));
-            break;
-         case "w" :
-            conditionBuilder.or(member.nickname.contains(keyword));
-            break;
-         case "c" :
-            conditionBuilder.or(board.content.contains(keyword));
-            break;
-         }
-         
-      }
-      
-      booleanBuilder.and(conditionBuilder);
+      if (type != null) {
+          
+          String[] typeArr = type.split("");
+          BooleanBuilder conditionBuilder = new BooleanBuilder();
+          for(String t : typeArr) {
+             switch(t) {
+             case "t" :
+                conditionBuilder.or(board.title.contains(keyword));
+                break;
+             case "w" :
+                conditionBuilder.or(member.nickname.contains(keyword));
+                break;
+             case "c" :
+                conditionBuilder.or(board.content.contains(keyword));
+                break;
+             }
+          }
+          
+          booleanBuilder.and(conditionBuilder);
+       }
       
       tuple.where(booleanBuilder);
       

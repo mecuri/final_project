@@ -40,7 +40,10 @@ public class BoardController {
    @GetMapping("/list")
    public void list(PageRequestDTO pageRequestDTO, Model model, @AuthenticationPrincipal PrincipalDetails principalDetails) {
       model.addAttribute("result", boardService.getList(pageRequestDTO));
-      model.addAttribute("memInfo", principalDetails.getMember());
+      model.addAttribute("memInfo", principalDetails.getMember()); 
+      
+      if(principalDetails != null) {
+      }
    }
    
    @ResponseBody
