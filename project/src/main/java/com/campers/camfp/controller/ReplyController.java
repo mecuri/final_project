@@ -28,12 +28,13 @@ public class ReplyController {
 	private final ReplyService replyService;
 	
 	@GetMapping("/{bno}/all")
-	public ResponseEntity<List<ReplyDTO>> getList(@PathVariable("bno") Long bno) {
+	public ResponseEntity<List<ReplyDTO>> getList(@PathVariable("bno") Long bno, @PathVariable("rno") Long rno) {
 		
 		log.info("list-------------");
 		log.info("BNO : " + bno);
+		log.info("RNO : " + rno);
 		
-		List<ReplyDTO> replyDTOList = replyService.getListOfBoard(bno);
+		List<ReplyDTO> replyDTOList = replyService.getListOfBoard(bno, rno);
 		
 		return new ResponseEntity<>(replyDTOList, HttpStatus.OK);
 	}

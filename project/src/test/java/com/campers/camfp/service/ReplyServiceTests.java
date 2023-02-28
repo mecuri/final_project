@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.stereotype.Service;
+import org.yaml.snakeyaml.nodes.AnchorNode;
 
 import com.campers.camfp.dto.board.ReplyDTO;
 import com.campers.camfp.service.board.ReplyService;
@@ -19,8 +20,9 @@ public class ReplyServiceTests {
 	@Test
 	public void testGetList() {
 		Long bno = 17L;
+		Long rno = 1L;
 		
-		List<ReplyDTO> replyDTOList = replyService.getListOfBoard(bno);
+		List<ReplyDTO> replyDTOList = replyService.getListOfBoard(bno, rno);
 		
 		replyDTOList.forEach(replyDTO -> System.out.println(replyDTO));
 	}

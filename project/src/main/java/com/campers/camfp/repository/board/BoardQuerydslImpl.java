@@ -53,6 +53,7 @@ public class BoardQuerydslImpl extends QuerydslRepositorySupport implements Boar
       jpqlQuery.leftJoin(member).on(board.member.eq(member));
       jpqlQuery.leftJoin(reply).on(reply.board.eq(board));
       jpqlQuery.leftJoin(heart).on(heart.productNum.eq(board.bno));
+      jpqlQuery.leftJoin(heart).on(heart.productNum.eq(reply.rno));
       
       JPQLQuery<Tuple> tuple = jpqlQuery.select(board, member, reply.count(), heart.count());
       

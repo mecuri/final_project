@@ -448,8 +448,11 @@ async function loadReadRepliesData(bno, rno) {
                         </div>  
                         <div id="replyBtn">
                         	<button class="hideModifyBtn${reply.rno}" id="removeReplyBtn" onclick="removeReply(${reply.bno}, ${reply.rno})">댓글 삭제</button>  
-                        	<button class="hideModifyBtn${reply.rno}" id="modifyReplyBtn" onclick="modifyReply(${reply.bno}, ${reply.rno})" value="${reply.rno}">댓글 수정</button>  
-                        	<button id="replyHeart" value="${reply.heart}"></button>  
+                        	<button class="hideModifyBtn${reply.rno}" id="modifyReplyBtn" onclick="modifyReply(${reply.bno}, ${reply.rno})" value="${reply.rno}">댓글 수정</button>
+                        	<div class="img replyHeart-box">
+                        		<div class="replyHeart ${hlno ? 'replyH-on' : 'replyH-off'}" data-hlno="${hlno}" data-rno="${reply.rno}"></div>
+                        		<h6 class="replyHeart-count">${reply.heart}</h6>
+                    		</div>
                         </div>
                         <hr>	
                     </div>	
@@ -601,6 +604,44 @@ function heartCheck(no) {
         data: JSON.stringify({
             productNum: no,
             productType: "BOARD"
+        }), dataType: "json"
+    }).responseText
+}
+
+// REPLY HEART
+// HEART
+$("#repliesListRE").on("click", ".replyHeart", async ({target}) => {
+    const $this = $(target);
+    const {rno, hlno} = $this.data();
+    const isOnReply = $this.hasClass("replyH-on"); // 내가 눌렀니?
+    const replyData = { productNum: rno,  productType: "REPLY"};
+    if (isOnReply) data.hlno = hlno;
+    try {
+        const {hlno: saveHlno} = await $.ajax({
+            url: isOnReply ? "/heart/remove" : "/heart/save",
+            method: isOnReply ? "delete" : "post",
+            data: JSON.stringify(replyData),
+            contentType: "application/json"
+        });
+        $this.removeClass(isOnReply ? "replyH-on" : "replyH-off").addClass(isOn ? "replyH-off" : "replyH-on");
+        $this.data("hlno", saveHlno);
+        const $replyCount = $(".replyHeart-count");
+        $count.text(parseInt($replyCount.text()) + (isOnReply ? -1 : 1));
+    } catch (e) {
+        console.error("좋아요 오류", e);
+    }
+});
+
+// 하트 확인 메서드
+function heartCheck(no) {
+    return $.ajax({
+        url: "/heart/getOne",
+        contentType: "application/json",
+        async: false,
+        method: "POST",
+        data: JSON.stringify({
+            productNum: no,
+            productType: "REPLY"
         }), dataType: "json"
     }).responseText
 }

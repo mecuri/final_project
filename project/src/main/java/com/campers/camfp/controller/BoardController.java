@@ -71,11 +71,13 @@ public class BoardController {
    
    @ResponseBody
    @GetMapping(value="/list/{bno}", produces=MediaType.APPLICATION_JSON_VALUE)
-   public ResponseEntity<List<Object>> read(@PathVariable("bno") Long bno, @AuthenticationPrincipal PrincipalDetails principalDetails) {      
+   public ResponseEntity<List<Object>> read(@PathVariable("bno") Long bno, @PathVariable("rno") Long rno, @AuthenticationPrincipal PrincipalDetails principalDetails) {      
       log.info("bno : " + bno);
+      log.info("rno : " + rno); 
+      
       
       BoardDTO boardDTO = boardService.read(bno);
-      List<ReplyDTO> replyDTO = replyService.getListOfBoard(bno);
+      List<ReplyDTO> replyDTO = replyService.getListOfBoard(bno, rno);
       
       log.info("-----------boardDTO---------- : " + boardDTO);
       log.info("-----------replyDTO---------- : " + replyDTO);

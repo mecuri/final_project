@@ -6,10 +6,12 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
+import com.campers.camfp.config.type.ProductType;
 import com.campers.camfp.dto.board.ReplyDTO;
 import com.campers.camfp.entity.board.Board;
 import com.campers.camfp.entity.board.Reply;
 import com.campers.camfp.repository.board.ReplyRepository;
+import com.campers.camfp.repository.heart.HeartListRepository;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -20,16 +22,20 @@ import lombok.extern.log4j.Log4j2;
 public class ReplyServiceImpl implements ReplyService{
 	
 	private final ReplyRepository replyRepository;
+	private final HeartListRepository heartListRepository;
 	
 	@Override
-	public List<ReplyDTO> getListOfBoard(Long bno) {
+	public List<ReplyDTO> getListOfBoard(Long bno, Long rno) {
 		
 		// bno -> board
 		Board board = Board.builder().bno(bno).build(); 
 		
+		// heart count
+		Long heartCount = heartListRepository.countHeartByProductNumAndProductType(rno, ProductType.REPLY);
+		
 		List<Reply> result = replyRepository.findByBoard(board);
 		
-		return result.stream().map(boardReply -> entityToDTO(boardReply)).collect(Collectors.toList());
+		return result.stream().map(boardReply -> entityToDTO(boardReply, heartCount)).collect(Collectors.toList());
 	}
 
 	@Override
